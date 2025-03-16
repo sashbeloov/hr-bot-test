@@ -37,6 +37,8 @@ async def handle_text(message: types.Message):
         await free_position(message)
     elif "choosed_position" in user_data[user_id]:
         await filial(message)
+    elif "Ofis" in user_data[user_id]:
+        await ofis_next(message)
 
 
 
@@ -133,6 +135,26 @@ async def ofis(message: types.Message):
     await message.answer("Keling, anketagizni yaratamiz", reply_markup=keyboard)
     await message.answer("Tumanni tanlang:")
     print(user_data)
+
+
+city_location = {"Toshkent","Toshkent viloyati","Samarqand viloyati","Farg'ona viloyati",}
+
+
+
+async def ofis_next(message: types.Message):
+    user_id = message.from_user.id
+    user_data[user_id]["city_location"] = message.text
+    if message.text in city_location:
+        button = [
+            [types.KeyboardButton(text="🛒 Mahalla Chimboy"),types.KeyboardButton(text="🛒 Mahalla Achabod")],
+            [types.KeyboardButton(text="Bosh ofis")] ,
+            [types.KeyboardButton(text="Orqaga")],
+        ]
+        keyboard = types.ReplyKeyboardMarkup(keyboard=button, resize_keyboard=True)
+        await message.answer("Ishlamoqchi bo'lgan do'kon/bo'limni tanlang", reply_markup=keyboard)
+        print(user_data)
+
+
 
 
 @dp.message(Command("Korzinka Go (Yetkazib berish)"))
